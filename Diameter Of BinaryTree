@@ -10,7 +10,7 @@ Sample Output:
 /******************SOLUTION************************/
 
 
-
+Approach 1: Complexity -O(n^2)
 int height(TreeNode<int>*root){
 if(root == NULL){
 return 0;
@@ -23,9 +23,33 @@ int diameterOfBinaryTree(TreeNode<int>*root){
 if(root == NULL){
 return 0;
 }
-int l = height(root->left);
-int r = height(root->right);
-int ld = diameterOfBinaryTree(root->left);
-int rd = diameterOfBinaryTree(root->right);
-return max(l + r, max(ld,rd));
+int op1 = diameterOfBinaryTree(root->left);
+int op2 = diameterOfBinaryTree(root->right);
+int op3 = height(root->left) + height(root->right) + 1;
+return max(op1, max(op2, op3));
+}
+
+
+
+Approach 2: Complexity - O(n)
+pair<int, int> diaFast(TreeNode<int>*root){
+if(root == NULL){
+pair<int, int> p = make_pair(0,0);
+return p;
+pair<int, int> left = diaFast(root->left);
+pair<int, int>right = diaFast(root->right);
+
+int op1 = left.first;
+int op2 = left.second;
+int op3 = left.second + right.second + 1;
+pair<int, int> ans;
+ans.first = max(op1, max(op2, op3));
+ans.second = max(left.second, right.second) + 1;
+return ans;
+}
+
+
+int diameterOfBinaryTree(TreeNode<int>*root){
+   return diaFast(root).first;
+ }
 }
